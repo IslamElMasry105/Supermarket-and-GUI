@@ -1,0 +1,197 @@
+class Product:
+    supermarket_name = "My Supermarket"
+
+    def __init__(self, product_id, name, price, manufacturer, weight, expiration_date, year):
+        self.__product_id = product_id
+        self.name = name
+        self.price = price
+        self.manufacturer = manufacturer
+        self.weight = weight
+        self.expiration_date = expiration_date
+        self.year = year
+
+    def print_product_detail(self):
+        print("Supermarket:", self.supermarket_name)
+        print("Product ID:", self.__product_id)
+        print("Name:", self.name)
+        print("Price:", self.price)
+        print("Manufacturer:", self.manufacturer)
+        print("Weight:", self.weight)
+        print("Expiration Date:", self.expiration_date)
+        print("Year:", self.year)
+
+
+class Healthy(Product):
+    def __init__(self, product_id, name, price, manufacturer, weight, expiration_date, year, calories=0, components=""):
+        super().__init__(product_id, name, price, manufacturer, weight, expiration_date, year)
+        self.calories = calories
+        self.components = components
+
+    def add_calories(self, calories):
+        self.calories += calories
+
+    def display_healthy_product_details(self):
+        super().print_product_detail()
+        print("Calories:", self.calories)
+        print("Components:", self.components)
+
+    def change_calories(self, increment):
+        self.calories += increment
+
+    def compute_total_calories(self):
+        return self.calories * self.weight
+
+
+def main():
+    while True:
+        print("Welcome to", Product.supermarket_name)
+        print("Choose your option:")
+        print("1. Product")
+        print("2. Healthy")
+        print("3. Exit the Supermarket cashier system")
+        option = input("Enter your choice: ")
+
+        if option == "1":
+            product_menu()
+        elif option == "2":
+            healthy_menu()
+        elif option == "3":
+            print("Exiting Supermarket cashier system...")
+            break
+        else:
+            print("Invalid option. Please try again.")
+
+
+def product_menu():
+    products = []
+    while True:
+        print("\nPRODUCT MENU:")
+        print("1. Add new Product")
+        print("2. Display Product Details")
+        print("3. Change/Edit product ID")
+        print("4. Exit the sub-system")
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            product = add_product()
+            products.append(product)
+        elif choice == "2":
+            display_product_details(products)
+        elif choice == "3":
+            change_product_id(products)
+        elif choice == "4":
+            break
+        else:
+            print("Invalid option. Please try again.")
+
+
+def add_product():
+    product_id = input("Enter product ID: ")
+    name = input("Enter name: ")
+    price = input("Enter price: ")
+    manufacturer = input("Enter manufacturer: ")
+    weight = input("Enter weight: ")
+    expiration_date = input("Enter expiration date: ")
+    year = input("Enter year: ")
+    return Product(product_id, name, price, manufacturer, weight, expiration_date, year)
+
+
+def display_product_details(products):
+    if not products:
+        print("No products added yet.")
+    else:
+        for idx, product in enumerate(products, start=1):
+            print(f"\nProduct {idx} details:")
+            product.print_product_detail()
+
+
+def change_product_id(products):
+    if not products:
+        print("No products added yet.")
+    else:
+        product_index = int(input("Enter the index of the product you want to edit: ")) - 1
+        new_id = input("Enter the new product ID: ")
+        products[product_index]._Product__product_id = new_id
+        print("Product ID changed successfully.")
+
+
+def healthy_menu():
+    healthy_products = []
+    while True:
+        print("\nHEALTHY MENU:")
+        print("1. Add new Healthy Product")
+        print("2. Display Healthy Product Details")
+        print("3. Change/Edit calories")
+        print("4. Check calories and components of Healthy Product")
+        print("5. Compute total calories of the Healthy Product based on the weight")
+        print("6. Exit the sub-system")
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            healthy_product = add_healthy_product()
+            healthy_products.append(healthy_product)
+        elif choice == "2":
+            display_healthy_product_details(healthy_products)
+        elif choice == "3":
+            change_calories(healthy_products)
+        elif choice == "4":
+            check_calories_and_components(healthy_products)
+        elif choice == "5":
+            compute_total_calories(healthy_products)
+        elif choice == "6":
+            break
+        else:
+            print("Invalid option. Please try again.")
+
+
+def add_healthy_product():
+    product_id = input("Enter product ID: ")
+    name = input("Enter name: ")
+    price = input("Enter price: ")
+    manufacturer = input("Enter manufacturer: ")
+    weight = float(input("Enter weight: "))
+    expiration_date = input("Enter expiration date: ")
+    year = input("Enter year: ")
+    return Healthy(product_id, name, price, manufacturer, weight, expiration_date, year)
+
+
+def display_healthy_product_details(healthy_products):
+    if not healthy_products:
+        print("No healthy products added yet.")
+    else:
+        for idx, product in enumerate(healthy_products, start=1):
+            print(f"\nHealthy Product {idx} details:")
+            product.display_healthy_product_details()
+
+
+def change_calories(healthy_products):
+    if not healthy_products:
+        print("No healthy products added yet.")
+    else:
+        product_index = int(input("Enter the index of the healthy product you want to edit: ")) - 1
+        increment = int(input("Enter the calories to add: "))
+        healthy_products[product_index].change_calories(increment)
+        print("Calories updated successfully.")
+
+
+def check_calories_and_components(healthy_products):
+    if not healthy_products:
+        print("No healthy products added yet.")
+    else:
+        product_index = int(input("Enter the index of the healthy product you want to check: ")) - 1
+        print(f"Calories: {healthy_products[product_index].calories}")
+        print(f"Components: {healthy_products[product_index].components}")
+
+
+def compute_total_calories(healthy_products):
+    if not healthy_products:
+        print("No healthy products added yet.")
+    else:
+        product_index = int(input("Enter the index of the healthy product you want to compute calories for: ")) - 1
+        weight = float(input("Enter the weight (in grams): "))
+        total_calories = healthy_products[product_index].compute_total_calories()
+        print(f"Total calories for {weight} grams: {total_calories}")
+
+
+if __name__ == "__main__":
+    main()
